@@ -82,14 +82,15 @@ function DrawkillPotential(damage)
 			if(damage >= Target.health) then
 
 				DrawCircle3D(Target.x,Target.y,Target.z,150,3,ARGB(255,255,0,0))
-
 			elseif damage * 1.2 >= Target.health then
 
 				DrawCircle3D(Target.x,Target.y,Target.z,150,3,ARGB(255,0,255,0))
-
 			elseif damage * 1.5 >= Target.health then
 
 				DrawCircle3D(Target.x,Target.y,Target.z,150,3,ARGB(255,0,255,255))
+			else
+			
+				DrawCircle3D(Target.x,Target.y,Target.z,150,3,ARGB(255,0,0,0))
 			end
 	end
 end
@@ -173,7 +174,7 @@ function KillSteal()
 				
 			elseif InRange(enemy,1025) and Param.Setup.flashkill and GetFlashSlot() and myHero:CanUseSpell(GetFlashSlot()) == READY then
 			
-			if GetEDamageTimed(enemy) >= enemy.health then
+			    if GetEDamageTimed(enemy) >= enemy.health then
 			
 					CastSpell(GetFlashSlot(),enemy.x,enemy.z)
 					CastE(enemy)
@@ -220,7 +221,6 @@ function Combo(Target)
 	
 		if Param.Key.hkey and InRange(Target,600) then
 		
-			followTarget(Target)
 			CastQ(Target)
 			CastE(Target)
 			
@@ -250,7 +250,7 @@ function GetDamage(Target)
 
 	local modifier = 1
 	
-	if myHero:CanUseSpell(_R) == READY then
+	if CanUse(_R) then
 	
 		modifier = 1.1
 	end
@@ -262,7 +262,7 @@ function GetRDamage(Target)
 
 	local RDamage = 0
 	
-	if myHero:CanUseSpell(_R) == READY then
+	if CanUse(_R) then
 	
 		RDamage = myHero:GetSpellData(_R).level * 100 + 50 + 0.7 * myHero.ap
 	end
@@ -281,7 +281,7 @@ function GetEDamage(Target)
 	
 	local EDamage = 0
 	
-	if myHero:CanUseSpell(_E) == READY then
+	if CanUse(_E) then
 	
 		EDamage = myHero:GetSpellData(_E).level * 30 + 30 + 1 * myHero.ap + 0.06 * myHero.maxHealth
 	end
@@ -302,7 +302,7 @@ function GetEDamageTimed(Target)
 	local startDamage = myHero:GetSpellData(_E).level * 15 + 15 + 0.35 * myHero.ap + 0.025 * myHero.maxHealth
 	local difference = 0
 	
-	if myHero:CanUseSpell(_E) == READY then
+	if CanUse(_E) then
 	
 		EDamage = myHero:GetSpellData(_E).level * 30 + 30 + 1 * myHero.ap + 0.06 * myHero.maxHealth
 	end
@@ -334,7 +334,7 @@ function GetQDamage(Target)
 		furryBonus = 2;
 	end
 	
-	if myHero:CanUseSpell(_Q) == READY then
+	if CanUse(_Q) then
 		QDamage = (myHero:GetSpellData(_Q).level * 15 + 60 + 0.55 * myHero.ap) * furryBonus
 	end
 	
@@ -363,7 +363,7 @@ end
 
 function CastR(Target)
 
-	if InRange(Target,700) and myHero:CanUseSpell(_R) == READY then
+	if InRange(Target,700) and CanUse(_R) then
 
 		CastSpell(_R,Target)
 
@@ -372,7 +372,7 @@ end
 
 function CastW()
 
-	if myHero:CanUseSpell(_W) == READY then
+	if CanUse(_W) then
 	
 		CastSpell(_W)
 		
@@ -381,7 +381,7 @@ end
 
 function CastE(Target)
 
-	if InRange(Target,600) and myHero:CanUseSpell(_E) == READY then
+	if InRange(Target,600) and CanUse(_E) then
 
 		follow = true
 		CastSpell(_E)
@@ -391,7 +391,7 @@ end
 
 function CastQ(Target)
 
-	if InRange(Target,600) and myHero:CanUseSpell(_Q) == READY then
+	if InRange(Target,600) and CanUse(_Q) then
 
 		CastSpell(_Q,Target)
 
@@ -450,8 +450,12 @@ function GetFlashSlot()
 	end
 end
 
+function CanUse(spell)
+
+	return myHero:CanUseSpell(spell) == READY
+end
+
 function InRange(Target,range)
 
 	if GetDistance(Target) < range then return true else return false end
-
 end
