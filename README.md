@@ -1,30 +1,15 @@
 # Vladimir-Vampire-Armageddon
 
-[success]
-
 Features
 
 - No FPS drops
-
-[/success]
-
-
-
-[info]
-
 - Spacebar to Win (Or any other key)
-
 - LastBreath (Before you die cast everything)
-
 - Killsteal / Killsteal with Flash
-
 - Harass
 - Draw damage
 - Draw range
 - Draw killpotential
-
-[/info]
-
 
 Changelog
 
